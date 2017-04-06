@@ -1,0 +1,65 @@
+parameters:
+    lamoda.json_rpc.request.class: 'Zored\JsonRpcBundle\Request\Entity\Request'
+    lamoda.json_rpc.request.method_access_checker.class: 'Zored\JsonRpcBundle\Request\Reflection\Method\ReflectionMethodChecker'
+    lamoda.json_rpc.request.parameter_converter.class: 'Zored\JsonRpcBundle\Request\Reflection\Parameter\JMSConverter'
+    lamoda.json_rpc.endpoint.class: 'Zored\JsonRpcBundle\Endpoint\Endpoint'
+    lamoda.json_rpc.request.reflection_method_checker.cache_service: 'app.cache'
+    lamoda.json_rpc.request.parameter_converter.cache_service: 'app.cache'
+    lamoda.json_rpc.request.parameter_converter.event_dispatcher_service: 'event_dispatcher'
+    lamoda.json_rpc.controller.context:
+        serviceNames: []
+
+services:
+    # Default controller (you can define your own):
+    lamoda.json_rpc.controller:
+        class: 'Zored\JsonRpcBundle\Controller\DefaultController'
+        arguments:
+          - '@lamoda.json_rpc.endpoint'
+          - '%lamoda.json_rpc.controller.context%'
+
+    # Generates response for JSON-RPC request:
+    lamoda.json_rpc.endpoint:
+        class: '%lamoda.json_rpc.endpoint.class%'
+        arguments:
+          -
+            - '@lamoda.json_rpc.request.passer.single'
+            - '@lamoda.json_rpc.request.passer.batch'
+
+    # Converts parameters to pass into service method.
+    lamoda.json_rpc.request.reflection_method_checker:
+        class: '%lamoda.json_rpc.request.method_access_checker.class%'
+        arguments:
+            - '@lamoda.json_rpc.request.parameter_converter'
+            - null
+
+    # Converts parameters to pass into service method.
+    lamoda.json_rpc.request.parameter_converter:
+        class: '%lamoda.json_rpc.request.parameter_converter.class%'
+        arguments:
+            - '@jms_serializer'
+            - null
+            - '@validator'
+
+    # Apply JSON-RPC request to method:
+    lamoda.json_rpc.request.handler:
+        class: 'Zored\JsonRpcBundle\Request\Handler\ServiceHandler'
+        arguments:
+            - '@service_container'
+            - '@lamoda.json_rpc.request.reflection_method_checker'
+            - '@lamoda.json_rpc.request.parameter_converter'
+
+    # Passes request object to handler:
+    lamoda.json_rpc.request.passer.single:
+        class: 'Zored\JsonRpcBundle\Request\Passer\SingleRequestPasser'
+        arguments:
+            - '@jms_serializer'
+            - '@validator'
+            - '@lamoda.json_rpc.request.handler'
+            - '%lamoda.json_rpc.request.class%'
+            - null
+
+    # Passes multiple request objects to handler:
+    lamoda.json_rpc.request.passer.batch:
+        class: 'Zored\JsonRpcBundle\Request\Passer\BatchRequestPasser'
+        arguments:
+            - '@lamoda.json_rpc.request.passer.single'

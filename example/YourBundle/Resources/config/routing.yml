@@ -1,0 +1,5 @@
+# Default controller (you can define your own):
+your_json_rpc:
+    resource: "@lamoda.json_rpc.controller"
+    prefix: /your-json-rpc
+    type: annotation

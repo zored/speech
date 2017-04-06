@@ -1,0 +1,34 @@
+{
+    "name": "zored/json-rpc-bundle",
+    "description": "JSON-RPC 2.0 server for Symfony 2 / 3.",
+    "keywords": [
+        "json",
+        "rpc",
+        "jsonrpc",
+        "json-rpc",
+        "symfony2bundle"
+    ],
+    "homepage": "http://github.com/zored/json-rpc-bundle",
+    "license":"MIT",
+    "type": "package",
+    "authors":[
+        {
+            "name": "Robert Akhmerov",
+            "email": "r@rob.su",
+            "homepage": "http://rob.su"
+        }
+    ],
+    "require":{
+        "php": ">=5.4"
+    },
+    "require-later": {
+        "symfony/symfony": "~2.7|~3.0",
+        "jms/serializer-bundle": "~1.0",
+        "symfony/event-dispatcher": "~2.3|~3.0"
+    },
+    "autoload":{
+        "psr-4": {
+            "Zored\\JsonRpcBundle\\": "Zored/JsonRpcBundle/"
+        }
+    }
+}

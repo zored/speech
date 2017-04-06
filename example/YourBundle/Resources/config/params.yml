@@ -1,0 +1,4 @@
+# Service names for default controller:
+parameters:
+  lamoda.json_rpc.controller.context:
+    serviceNames: ['your.service']
