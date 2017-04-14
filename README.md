@@ -60,7 +60,7 @@ You can use as **standalone library**. Or with **Symfony**.
 - Request passer passes request object to [request handler](src/Request/Handler/RequestHandlerInterface.php) that pushes request somewhere to get response.
     - Now [service handler](src/Request/Handler/ServiceHandler.php) is used to:
         - Deserialize request `params` if set with [parameter converter](src/Request/Handler/RequestHandlerInterface.php).
-        - Call public method of service with these params. **Services are restricted with `$context['serviceNames']`**. For default controller see `zored.speech.controller.context` parameter.
+        - Call public method of service with these params. **Services are restricted with [`ServiceContext`](src/Endpoint/Context/ServiceContext.php)**. For default controller see `zored.speech.controller.context` parameter.
         - Wait for `array` or [`AbstractResponse`](src/Response/Entity/AbstractResponse.php).
 - Request then passed back and serialized to array.
 

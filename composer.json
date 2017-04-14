@@ -1,6 +1,6 @@
 {
     "name": "zored/speech",
-    "description": "JSON-RPC 2.0. With Symfony 2.0 to 3.0 support.",
+    "description": "JSON-RPC 2.0 for PHP. With Symfony 2.0 to 3.0 support.",
     "keywords": [
         "json",
         "rpc",
