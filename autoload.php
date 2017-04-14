@@ -2,8 +2,7 @@
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
+$loader = require __DIR__ . '/vendor/autoload.php';
+
 // Autoload and add annotations:
-AnnotationRegistry::registerLoader([
-    require __DIR__ . '/vendor/autoload.php',
-    'loadClass',
-]);
+AnnotationRegistry::registerLoader([$loader, 'loadClass',]);

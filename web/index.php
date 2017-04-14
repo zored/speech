@@ -9,8 +9,8 @@ use Zored\SpeechBundle\Test\Functional\JsonRpc\Greeter;
 require __DIR__ . '/../autoload.php';
 
 // Get JSON from GET or POST:
-//$json = $_GET['request'];
-$json = file_get_contents('php://input');
+$json = $_GET['request'];
+//$json = file_get_contents('php://input');
 
 // JSON response:
 header('Content-Type: application/json');
@@ -20,7 +20,7 @@ $context = new ServiceContext(['your.service']);
 
 // Echo output:
 echo (new EndpointBuilder())
-    ->addSubscriber(new UUID4Subscriber())
+//    ->addSubscriber(new UUID4Subscriber())
     ->addService('your.service', Greeter::class)
     ->getEndpoint()
     ->handle($json, $context);
