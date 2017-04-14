@@ -15,10 +15,9 @@ You can use as **standalone library**. Or with **Symfony**.
 - Add route to default endpoint: `routing.yml`:
     ```yaml
     json_rpc:
-        type: annotation
         defaults: { _controller: ZoredSpeechBundle:Default:jsonRpc }
         methods: [POST] # Or GET for Zored RPC.
-        prefix: /json-rpc
+        path: /json-rpc
     ```
 - Add service with your JSON-RPC methods in `services.yml`:
     ```yaml
@@ -30,8 +29,7 @@ You can use as **standalone library**. Or with **Symfony**.
 - Allow this service to run in default controller via `parameters.yml`:
     ```yaml
     parameters:
-      zored.speech.controller.context:
-        serviceNames: ['your.service']
+      zored.speech.controller.context.service_ids: ['your.service']
     ```
 - Clear caches.
 - Test:

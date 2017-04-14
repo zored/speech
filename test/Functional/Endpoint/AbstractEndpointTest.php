@@ -65,6 +65,23 @@ JSON;
                 self::SUCCESS_REQUEST,
                 self::SUCCESS_RESPONSE,
             ],
+            'success_holder' => [
+                /* @lang JSON */<<<JSON
+{
+    "jsonrpc": 2.0,
+    "id": "456daEFb-5AA6-41B5-8DBC-068B05A8B201",
+    "method": "your.service:greetHolder",
+    "params": {
+      "person": {
+          "name": "Tom",
+          "age": 19
+      }
+    }
+}
+JSON
+                ,
+                /* @lang JSON */'{"jsonrpc":"2.0","id":"456daEFb-5AA6-41B5-8DBC-068B05A8B201","result":{"message":"Hello, Tom"}}',
+            ],
             'success_error' => [
                 /* @lang JSON */<<<JSON
 {

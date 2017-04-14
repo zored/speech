@@ -5,6 +5,7 @@ namespace Zored\SpeechBundle\Request\Parameter;
 use JMS\Serializer\SerializerInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Zored\SpeechBundle\Request\Entity\ParamsHolderInterface;
 use Zored\SpeechBundle\Exception\ErrorException;
 use Zored\SpeechBundle\Request\Entity\Parameter;
 use Zored\SpeechBundle\Response\ErrorCodeInterface;
@@ -42,22 +43,38 @@ class JMSConverter implements ParameterConverterInterface
         $values = [];
 
         $parameters = $this->getParameters($object, $method);
+        $isAssoc = !$this->isPositional($requestParameters);
+
+        // Wrap all parameters with class:
+        if (
+            count($parameters) == 1 &&
+            $parameters[0]->getClass() &&
+            class_implements(
+                $parameters[0]->getClass(),
+                ParamsHolderInterface::class
+            )
+        ) {
+            if (!$isAssoc) {
+                $this->throwException('Parameters should be associative.');
+            }
+
+            return [$this->parseValue($parameters[0], $requestParameters)];
+        }
+
         if (count($parameters) < count($requestParameters)) {
-            throw new ErrorException(
-                'Too much parameters.',
-                ErrorCodeInterface::INVALID_PARAMS
-            );
+            $this->throwException('Too much parameters.');
         }
 
         foreach ($parameters as $index => $parameter) {
             $name = $parameter->getName();
 
-            $isAssocValue = isset($requestParameters[$name]);
-            $requestHasValue = $isAssocValue || isset($requestParameters[$index]);
+            $requestHasValue = $isAssoc
+                ? isset($requestParameters[$name])
+                : isset($requestParameters[$index]);
 
             // Add requested value:
             if ($requestHasValue) {
-                $value = $requestParameters[$isAssocValue ? $name : $index];
+                $value = $requestParameters[$isAssoc ? $name : $index];
                 $values[] = $this->parseValue($parameter, $value);
                 continue;
             }
@@ -75,6 +92,16 @@ class JMSConverter implements ParameterConverterInterface
         }
 
         return $values;
+    }
+
+    private function throwException($message)
+    {
+        throw new ErrorException($message, ErrorCodeInterface::INVALID_PARAMS);
+    }
+
+    private function isPositional(array $arr = null)
+    {
+        return $arr !== null && array_keys($arr) === range(0, count($arr) - 1);
     }
 
     /**
