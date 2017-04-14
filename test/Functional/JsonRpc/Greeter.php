@@ -2,6 +2,7 @@
 
 namespace Zored\SpeechBundle\Test\Functional\JsonRpc;
 
+use Zored\SpeechBundle\Test\Functional\JsonRpc\DTO\PersonHolder;
 use Zored\SpeechBundle\Request\Parameter\ParameterConverterInterface;
 use Zored\SpeechBundle\Response\Entity\AbstractResponse;
 use Zored\SpeechBundle\Response\Entity\Error;
@@ -26,6 +27,11 @@ class Greeter
         return [
             'message' => "Hello, {$person->getName()}",
         ];
+    }
+
+    public function greetHolder(PersonHolder $personHolder)
+    {
+        return $this->greet($personHolder->getPerson());
     }
 
     /**
