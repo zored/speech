@@ -1,4 +1,5 @@
-# JSON-RPC Bundle
+# Speech
+## JSON-RPC 2.0 for PHP
 Bundle for JSON-RPC 2.0.
 You can use as **standalone library**. Or with **Symfony**.
 
