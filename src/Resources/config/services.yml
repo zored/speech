@@ -1,0 +1,56 @@
+services:
+    # Generates response for JSON-RPC request:
+    zored.speech.endpoint:
+        class: '%zored.speech.endpoint.class%'
+        arguments:
+          - ['@zored.speech.request.passer.single', '@zored.speech.request.passer.batch']
+
+    zored.speech.controller.context:
+        class: '%zored.speech.endpoint.context.class%'
+        arguments:
+            - '%zored.speech.controller.context.service_ids%'
+
+    # Converts parameters to pass into service method.
+    zored.speech.request.reflection_method_checker:
+        class: '%zored.speech.request.method_access_checker.class%'
+        arguments:
+            - '@zored.speech.request.parameter_converter'
+            - null
+
+    # Converts parameters to pass into service method.
+    zored.speech.request.parameter_converter:
+        class: '%zored.speech.request.parameter_converter.class%'
+        arguments:
+            - '@jms_serializer'
+            - null
+            - '@validator'
+
+    # Apply JSON-RPC request to method:
+    zored.speech.request.handler:
+        class: 'Zored\SpeechBundle\Request\Handler\ServiceHandler'
+        arguments:
+            - '@service_container'
+            - '@zored.speech.request.reflection_method_checker'
+            - '@zored.speech.request.parameter_converter'
+
+    # Passes request object to handler:
+    zored.speech.request.passer.single:
+        class: 'Zored\SpeechBundle\Request\Passer\SingleRequestPasser'
+        arguments:
+            - '@jms_serializer'
+            - '@validator'
+            - '@zored.speech.request.handler'
+            - '%zored.speech.request.class%'
+            - null
+
+    # Passes multiple request objects to handler:
+    zored.speech.request.passer.batch:
+        class: 'Zored\SpeechBundle\Request\Passer\BatchRequestPasser'
+        arguments:
+            - '@zored.speech.request.passer.single'
+
+    # Zored uses UUID4 for request ID:
+    # (you can remove tag in compiler pass if don't need this limitation).
+    zored.speech.request_subscriber:
+        class: Zored\SpeechBundle\Subscriber\UUID4Subscriber
+        tags: [{ name: kernel.event_subscriber }]

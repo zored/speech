@@ -1,0 +1,4 @@
+framework:
+    secret: dummy
+    validation:
+        enable_annotations: true

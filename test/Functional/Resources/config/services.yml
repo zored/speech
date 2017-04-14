@@ -1,0 +1,3 @@
+services:
+    your.service:
+        class: Zored\SpeechBundle\Test\Functional\JsonRpc\Greeter

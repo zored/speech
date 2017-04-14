@@ -1,6 +1,0 @@
-# Add JSON-RPC service.
-services:
-    your.service:
-        class: 'YourBundle\JsonRpc\GreeterJsonRpc'
-        arguments:
-        - '@event_dispatcher'

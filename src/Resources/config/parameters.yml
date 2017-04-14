@@ -1,0 +1,15 @@
+parameters:
+    # Service classes:
+    zored.speech.request.class: 'Zored\SpeechBundle\Request\Entity\Request'
+    zored.speech.request.method_access_checker.class: 'Zored\SpeechBundle\Request\Method\IsCallableChecker'
+    zored.speech.request.parameter_converter.class: 'Zored\SpeechBundle\Request\Parameter\JMSConverter'
+    zored.speech.endpoint.class: 'Zored\SpeechBundle\Endpoint\Endpoint'
+
+    # Service dependencies:
+    zored.speech.request.reflection_method_checker.cache_service: 'app.cache'
+    zored.speech.request.parameter_converter.cache_service: 'app.cache'
+    zored.speech.request.parameter_converter.event_dispatcher_service: 'event_dispatcher'
+
+    # Default controller context:
+    zored.speech.controller.context.service_ids: []
+    zored.speech.endpoint.context.class: 'Zored\SpeechBundle\Endpoint\Context\ServiceContext'
