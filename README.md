@@ -2,6 +2,7 @@
 ## JSON-RPC 2.0 for PHP
 [![Build Status](https://travis-ci.org/zored/speech.svg?branch=master)](https://travis-ci.org/zored/speech)
 [![Latest Stable Version](https://poser.pugx.org/zored/speech/v/stable)](https://packagist.org/packages/zored/speech)
+
 Bundle for JSON-RPC 2.0.
 You can use as **standalone library**. Or with **Symfony**.
 
