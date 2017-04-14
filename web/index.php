@@ -9,8 +9,16 @@ use Zored\SpeechBundle\Test\Functional\JsonRpc\Greeter;
 require __DIR__ . '/../autoload.php';
 
 // Get JSON from GET or POST:
-$json = $_GET['request'];
-//$json = file_get_contents('php://input');
+switch($_SERVER['REQUEST_METHOD']) {
+    default:
+    case 'GET':
+        $json = $_GET['request'];
+        break;
+
+    case 'POST':
+        $json = file_get_contents('php://input');
+        break;
+}
 
 // JSON response:
 header('Content-Type: application/json');
